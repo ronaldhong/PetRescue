@@ -3,7 +3,7 @@
 <hr>
 
 <p>
-I'm rewriting the <a src = "https://github.com/ronaldhong/PetImage">PetImage</a> project, the new PetRescue project will share similar purpose, that is to allow anyone to share infomation about animal in need.
+I'm rewriting the <a href = "https://github.com/ronaldhong/PetImage">PetImage</a> project, the new PetRescue project will share similar purpose, that is to allow anyone to share infomation about animal in need.
 </p>
 <p>
 Similar functionalities include:

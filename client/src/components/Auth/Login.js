@@ -4,9 +4,9 @@ import { GoogleLogin} from "react-google-login"
 import { GraphQLClient} from "graphql-request"
 // import Typography from "@material-ui/core/Typography";
 
-const HOST_QUERY = `
+const ME_QUERY = `
   {
-    host{
+    me{
       _id
       name
       email
@@ -16,18 +16,18 @@ const HOST_QUERY = `
 `
 
 const Login = ({ classes }) => {
-  
   const onSuccess = async googleUser => {
     const idToken = googleUser.getAuthResponse().id_token;
-    const client = new GraphQLClient("http://localhost:4000/", {
+    const client = new GraphQLClient("http://localhost:4000/graphql", {
       headers: { authorization: idToken }
-    })
-    const data = await client.request(HOST_QUERY);
-    console.log(data)
+    });
+    // client.request(ME_QUERY).then((data) => console.log("data",data))
+    const data = await client.request(ME_QUERY)
+    console.log("data", {data})
   };
 
   const onFailure = event => {
-    console.log(event)
+    console.log("event fail")
   };
 
   return <GoogleLogin 

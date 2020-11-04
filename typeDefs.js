@@ -21,14 +21,13 @@ module.exports = gql`
     }
 
     type Comment{
-        _id: ID
         createdAt:String
         text: String
         author: User
     }
 
     type Query{
-        host: User
+        me: User
 
     }
 `
