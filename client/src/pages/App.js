@@ -5,11 +5,9 @@ import Splash from "./Splash";
 const App = () => {
   return (
     <div>
-      Pet Rescue
       <Splash/>
     </div>
   )
-  
 };
 
 export default withRoot(App);
