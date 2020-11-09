@@ -1,12 +1,54 @@
-import React from "react";
+import React, {useContext} from "react";
 import { withStyles } from "@material-ui/core/styles";
-// import AppBar from "@material-ui/core/AppBar";
-// import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 // import Map from "@material-ui/icons/Map";
-// import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
+import Context from "../context"
+import SignOut from "./Auth/Signout"
+var Paw = require('../assets/paw.png');
 
 const Header = ({ classes }) => {
-  return <div>Header</div>;
+  const {state} = useContext(Context);
+  const {currentUser} = state;
+  const nameShort = currentUser.name ? currentUser.name.split(" ")[0] : "User"
+  return (
+    <div className = {classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          {/*Title / Logo */}
+          <div className = {classes.grow}>
+            <img className={classes.picture} src= {Paw}/>
+            <Typography
+            component = "h1"
+            variant = "h6"
+            color = "inherit"
+            noWrap
+            >
+              PetRescue
+            </Typography>
+          </div>
+          {currentUser && (
+            <div className = {classes.grow}>
+              <img 
+              className = {classes.picture}
+              src={currentUser.picture} 
+              alt={currentUser.name}
+              />
+              <Typography
+              variant = "h5"
+              color = "inherit"
+              noWrap
+              className = {classes.wordCap}
+              >
+                {nameShort}
+              </Typography>
+            </div>
+          )}
+          <SignOut/>   
+        </Toolbar>
+      </AppBar>
+    </div>)
 };
 
 const styles = theme => ({
@@ -30,6 +72,9 @@ const styles = theme => ({
     height: "50px",
     borderRadius: "90%",
     marginRight: theme.spacing.unit * 2
+  },
+  wordCap:{
+   "textTransform": "capitalize"
   }
 });
 

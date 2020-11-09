@@ -30,6 +30,5 @@ const checkIfUserExists = async email => await User.findOne({ email }).exec()
 const createNewUser = googleUser => {
     const {name, email, picture } = googleUser
     const user = {name, email, picture}
-    console.log("new user", user)
     return new User(user).save()
 }
