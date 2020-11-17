@@ -3,12 +3,14 @@ import { withStyles } from "@material-ui/core/styles";
 import ReactMapGL, {NavigationControl, Marker} from "react-map-gl"
 import PinIncon from "./PinIcon"
 import Context from "../context"
+import Blog from "./Blog"
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 
 //https://docs.mapbox.com/mapbox-gl-js/example/
+
 
 const INITIAL_VIEWPORT = {
   latitude: 29.7604,
@@ -21,6 +23,7 @@ const Map = ({ classes }) => {
   const {state, dispatch} = useContext(Context)
   const [viewPort, setViewPort]  = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
+  const {viewDevice} =  state;
 
   useEffect(()=>{
     getUserPosition()
@@ -51,8 +54,9 @@ const Map = ({ classes }) => {
   <div className = {classes.root}>
     <ReactMapGL 
     mapboxApiAccessToken = "pk.eyJ1Ijoicm9uaG9uZzkxOSIsImEiOiJja2g5eDI5ZTUweGFiMnNrOGsyamhjeHdpIn0.hCdpJkNuIt3fGLyZaM6KhA"
+    // width =  {viewDevice === "desktop" ? "50vw" : "100vw"}
     width = "100vw"
-    height = "calc(100vh - 128px)"
+    height = "calc(100vh - 64px)"
     mapStyle = "mapbox://styles/mapbox/streets-v9"
     onViewportChange = {viewPort => setViewPort(viewPort)}
     onClick = {handleMapClick}
@@ -95,6 +99,7 @@ const Map = ({ classes }) => {
       {/** End **/}
 
     </ReactMapGL>
+    <Blog/>
   </div>
   );
 };

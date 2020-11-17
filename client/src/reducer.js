@@ -32,6 +32,16 @@ export default function reducer(state, action){
                     longitude: action.payload.longitude
                 }
             }
+        case "DELETE_DRAFT":
+            return {
+                ...state,
+                draft: null
+            }
+        case "UPDATE_VIEW_DEVICE":
+            return {
+                ...state,
+                viewDevice: action.payload
+            }
         default:
             return state;
     }
