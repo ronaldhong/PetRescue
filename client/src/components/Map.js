@@ -24,6 +24,8 @@ const Map = ({ classes }) => {
   const [viewPort, setViewPort]  = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
   const {viewDevice} =  state;
+  const {draft} = state;
+  console.log(draft)
 
   useEffect(()=>{
     getUserPosition()
@@ -87,8 +89,8 @@ const Map = ({ classes }) => {
       {
         state.draft &&(
           <Marker
-          latitude = {state.draft.latitude}
-          longitude = {state.draft.longitude}
+          latitude = {draft.latitude}
+          longitude = {draft.longitude}
           offsetLeft = {-19}
           offsetTop = {-37}
         >
@@ -97,6 +99,14 @@ const Map = ({ classes }) => {
         )
       }
       {/** End **/}
+      {
+        state.draft &&(
+          <div className= {classes.sidebarStyle}>
+            <div>Longitude: {draft.longitude.toFixed(4)} | Latitude: {draft.latitude.toFixed(4)}</div>
+          </div>
+        )
+
+      }
 
     </ReactMapGL>
     <Blog/>
@@ -138,7 +148,19 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column"
-  }
+  },
+  sidebarStyle: {
+    display: "inline-block",
+    position: "absolute",
+    top: 0,
+    left: "50px",
+    margin: "12px",
+    backgroundColor: "#404040",
+    color: "#ffffff",
+    zIndex:" 1 !important",
+    padding: "6px",
+    fontWeight: "bold",
+    }
 };
 
 export default withStyles(styles)(Map);
