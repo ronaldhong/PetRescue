@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import Context from "../../context"
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -46,7 +46,7 @@ const CreatePin = ({ classes }) => {
           id = "image"
           type = "file"
           className = {classes.input}
-          onChange = {e=>setImage(e.target.files[0])}
+          onChange = {(e:React.FormEvent<HTMLInputElement>) => setImage(e.target.files[0])}
         />
         <label htmlFor="image">
           <Button
@@ -86,7 +86,7 @@ const CreatePin = ({ classes }) => {
   );
 };
 
-const styles = theme => ({
+const styles = (theme:any) => createStyles({
   form: {
     display: "flex",
     justifyContent: "center",

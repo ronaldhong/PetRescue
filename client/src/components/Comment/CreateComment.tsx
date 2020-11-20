@@ -1,16 +1,20 @@
 import React from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles, createStyles } from "@material-ui/core";
 // import InputBase from "@material-ui/core/InputBase";
 // import IconButton from "@material-ui/core/IconButton";
 // import ClearIcon from "@material-ui/icons/Clear";
 // import SendIcon from "@material-ui/icons/Send";
 // import Divider from "@material-ui/core/Divider";
 
-const CreateComment = ({ classes }) => {
+type createCommentProps = {
+  classes: any
+}
+
+const CreateComment = (props:any) => {
   return <div>CreateComment</div>;
 };
 
-const styles = theme => ({
+const styles = (theme:any) => createStyles({
   form: {
     display: "flex",
     alignItems: "center"

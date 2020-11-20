@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import ExploreIcon from "@material-ui/icons/Explore";
 import Typography from "@material-ui/core/Typography";
 
@@ -20,7 +20,7 @@ const NoContent = ({ classes }) => (
 )
 
 
-const styles = theme => ({
+const styles = (theme:any) => createStyles({
   root: {
     display: "flex",
     alignItems: "center",

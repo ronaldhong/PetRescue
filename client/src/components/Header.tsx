@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 // import Map from "@material-ui/icons/Map";
@@ -8,7 +8,12 @@ import Context from "../context"
 import SignOut from "./Auth/Signout"
 var Paw = require('../assets/paw.png');
 
-const Header = ({ classes }) => {
+
+type HeaderProps = {
+  classes: any
+};
+
+const Header = ({ classes }:HeaderProps) => {
   const {state} = useContext(Context);
   const {currentUser} = state;
   const nameShort = currentUser.name ? currentUser.name.split(" ")[0] : "User"
@@ -51,7 +56,7 @@ const Header = ({ classes }) => {
     </div>)
 };
 
-const styles = theme => ({
+const styles = (theme:any) => createStyles({
   root: {
     flexGrow: 1
   },

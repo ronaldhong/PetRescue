@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@material-ui/core/styles";
 import { GoogleLogin} from "react-google-login"
 import { GraphQLClient} from "graphql-request"
 import Context from "../../context"
@@ -7,11 +7,26 @@ import { Typography } from "@material-ui/core";
 import { ME_QUERY } from "../../graphql/queries"
 // import Typography from "@material-ui/core/Typography";
 
-const Login = ({ classes }) => {
+type LoginProp = {
+  classes: {
+    root: string,
+    footer: string
+  }
+}
+
+type LoginState = {
+
+}
+
+type User = any
+
+
+const Login = ({ classes}: LoginProp ) => {
 
   const {dispatch} = useContext(Context)
 
-  const onSuccess = async googleUser => {
+  const onSuccess = async (googleUser: User) => {
+    console.log("googleUser",googleUser)
     try{
       const idToken = googleUser.getAuthResponse().id_token;
       const client = new GraphQLClient("http://localhost:4000/graphql", {
@@ -25,7 +40,7 @@ const Login = ({ classes }) => {
     }
   };
 
-  const onFailure = err => {
+  const onFailure = (err: object) => {
     console.log("Error Login In")
   };
 
@@ -46,7 +61,7 @@ const Login = ({ classes }) => {
           onSuccess= {onSuccess}
           onFailure= {onFailure}
           isSignedIn = {true}
-          theme = "dark"
+          // theme = "dark"
         />
       </div>
       <div className = {classes.footer}>
@@ -64,7 +79,7 @@ const Login = ({ classes }) => {
   )
 };
 
-const styles = {
+const styles = createStyles({
   root: {
     height: "100vh",
     display: "flex",
@@ -82,6 +97,8 @@ const styles = {
     // flexDirection: "column",
     // alignItems: "center"
   }
-};
+});
+
+
 
 export default withStyles(styles)(Login);

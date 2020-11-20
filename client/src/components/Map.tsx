@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@material-ui/core/styles";
 import ReactMapGL, {NavigationControl, Marker} from "react-map-gl"
 import PinIncon from "./PinIcon"
 import Context from "../context"
@@ -114,7 +114,7 @@ const Map = ({ classes }) => {
   );
 };
 
-const styles = {
+const styles = createStyles({
   root: {
     display: "flex"
   },
@@ -157,10 +157,10 @@ const styles = {
     margin: "12px",
     backgroundColor: "#404040",
     color: "#ffffff",
-    zIndex:" 1 !important",
+    zIndex: 1,
     padding: "6px",
     fontWeight: "bold",
     }
-};
+});
 
 export default withStyles(styles)(Map);

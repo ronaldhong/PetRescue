@@ -2,10 +2,17 @@ import React, { useContext } from "react";
 import context from "../context"
 import NoContent from "./Pin/NoContent";
 import CreatePin from "./Pin/CreatePin"
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
-const Blog = ({ classes }) => {
+type BlogProp = {
+  classes: {
+    root: string,
+    rootMobile: string
+  }
+}
+
+const Blog = ({ classes }:BlogProp) => {
   const { state } = useContext(context);
   const { draft } = state;
   let BlogContent;
@@ -22,7 +29,7 @@ const Blog = ({ classes }) => {
   )
 };
 
-const styles = {
+const styles = createStyles({
   root: {
     minWidth: 350,
     maxWidth: 400,
@@ -37,6 +44,6 @@ const styles = {
     overflowX: "hidden",
     overflowY: "scroll"
   }
-};
+});
 
 export default withStyles(styles)(Blog);

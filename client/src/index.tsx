@@ -7,7 +7,7 @@ import App from "./pages/App";
 import Splash from "./pages/Splash";
 import ProtectedRoute from "./ProtectedRoute";
 
-import "mapbox-gl/dist/mapbox-gl.css";
+// import "mapbox-gl/dist/mapbox-gl.css";
 import * as serviceWorker from "./serviceWorker";
 
 const Root = () => {
