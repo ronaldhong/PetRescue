@@ -1,5 +1,7 @@
 import React, {useState, useContext} from "react";
-import Context from "../../context"
+import {GraphQLClient} from "graphql-request";
+import Context from "../../context";
+import axios from "axios";
 import { withStyles, createStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -8,21 +10,53 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhotoTwoTone";
 import LandscapeIcon from "@material-ui/icons/LandscapeOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
+import {CREATE_PIN_MUTATION} from "../../graphql/mutations"
+
+const API_KEY = `${process.env.REACT_APP_CLOUDINARY_API}`
 
 const CreatePin = ({ classes }) => {
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [content, setContent] = useState("")
   const {state, dispatch} = useContext(Context)
+  const [submit, setSubmit] = useState(false)
   const {draft} = state
 
-  const handleSubmit = event => {
-    event.preventDefault()
-    console.log(title)
-    console.log(image)
-    console.log(content)
+  const handleImageUpload = async () =>{
+    const data = new FormData()
+    data.append("file", image)
+    data.append("upload_preset", "petrescue")
+    data.append("api_key", API_KEY);
+    data.append("cloud_name", "dowtw1h8a")
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/dowtw1h8a/image/upload",
+      data
+    )
+    return res.data.url
+
   }
-  const handleDiscard = event => {
+  const handleSubmit = async event => {
+    try{
+      event.preventDefault();
+      setSubmit(true)
+      const url = image.length == 0 ? "" : await handleImageUpload()
+      const IdToken = window["gapi"].auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;   
+      const client = new GraphQLClient("http://localhost:4000/graphql",{
+        headers: {
+          authorization: IdToken 
+        }
+      })
+      const {latitude, longitude} = state.draft;
+      const variables = {title, image: url, content, latitude, longitude}
+      const {createPin} = await client.request(CREATE_PIN_MUTATION, variables)
+      console.log("Pin:", {createPin})
+      handleDiscard()
+    }catch (err){
+      setSubmit(false)
+      console.log("err creating Pin: ", err)
+    }
+  }
+  const handleDiscard = () => {
     setTitle("")
     setContent("")
     setImage("")
@@ -76,7 +110,7 @@ const CreatePin = ({ classes }) => {
           <ClearIcon className = {classes.leftIcon}/>
           Discard
         </Button>
-        <Button type="submit" className = {classes.button} variant = "contained" color = "secondary" disabled = {!title.trim() || !content.trim()} onClick = {handleSubmit}>
+        <Button type="submit" className = {classes.button} variant = "contained" color = "secondary" disabled = {!title.trim() || !content.trim() || submit} onClick = {handleSubmit}>
           <SaveIcon className = {classes.rightIcon}/>
           Submit 
         </Button>

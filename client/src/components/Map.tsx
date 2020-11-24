@@ -25,7 +25,6 @@ const Map = ({ classes }) => {
   const [userPosition, setUserPosition] = useState(null)
   const {viewDevice} =  state;
   const {draft} = state;
-  console.log(draft)
 
   useEffect(()=>{
     getUserPosition()

@@ -26,7 +26,6 @@ const Login = ({ classes}: LoginProp ) => {
   const {dispatch} = useContext(Context)
 
   const onSuccess = async (googleUser: User) => {
-    console.log("googleUser",googleUser)
     try{
       const idToken = googleUser.getAuthResponse().id_token;
       const client = new GraphQLClient("http://localhost:4000/graphql", {
