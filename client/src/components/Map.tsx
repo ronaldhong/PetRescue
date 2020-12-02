@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from "react";
 import { withStyles, createStyles } from "@material-ui/core/styles";
-import ReactMapGL, {NavigationControl, Marker} from "react-map-gl"
+import ReactMapGL, {NavigationControl, Marker, Popup} from "react-map-gl"
 import {GET_PINS} from "../graphql/queries"
 import {useClient} from "../client"
-import Contest from "../context"
+import differenceInMinute from "date-fns/difference_in_minutes"
 import PinIncon from "./PinIcon"
 import Context from "../context"
 import Blog from "./Blog"
-// import Button from "@material-ui/core/Button";
-// import Typography from "@material-ui/core/Typography";
-// import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import { Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 
 //https://docs.mapbox.com/mapbox-gl-js/example/
@@ -27,6 +27,7 @@ const Map = ({ classes }) => {
   const {state, dispatch} = useContext(Context)
   const [viewPort, setViewPort]  = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
+  const [popup, setPopup] = useState(null)
   const {viewDevice} =  state;
   const {draft} = state;
   const {pins} = state;
@@ -64,6 +65,18 @@ const Map = ({ classes }) => {
     dispatch({type:"UPDATE_DRAFT_LOCATION", payload:{longitude, latitude} })
   }
 
+  const handleSelectPin = (pin) => {
+    setPopup(pin)
+    dispatch({type:"SET_PIN", payload: pin})
+  }
+
+  const highlightNewPon = pin =>{
+    const color = differenceInMinute(Date.now(),Number(pin.createdAt)) <= 15? "limegreen" : "darkblue"
+    return color
+  }
+
+  const isAuthUser = () => state.currentUser._id === popup.author._id
+
   return( 
   <div className = {classes.root}>
     <ReactMapGL 
@@ -92,7 +105,7 @@ const Map = ({ classes }) => {
           offsetLeft = {-19}
           offsetTop = {-37}
         >
-          <PinIncon size = {40} color = "blue"/>
+          <PinIncon size = {40} color = "orange"/>
         </Marker>
       )}
       {/** End **/}
@@ -107,7 +120,7 @@ const Map = ({ classes }) => {
           offsetLeft = {-19}
           offsetTop = {-37}
         >
-          <PinIncon size = {40} color = "dark"/>
+          <PinIncon onClick = {()=>handleSelectPin(pin)} size = {40} color = {highlightNewPon(pin)}/>
         </Marker>
         ))
       }
@@ -133,8 +146,33 @@ const Map = ({ classes }) => {
             <div>Longitude: {draft.longitude.toFixed(4)} | Latitude: {draft.latitude.toFixed(4)}</div>
           </div>
         )
-
       }
+
+      {popup && (
+        <Popup
+        anchor = "top"
+        latitude = {popup.latitude}
+        longitude = {popup.longitude}
+        closeOnClick = {false}
+        onClose = {()=>setPopup(null)}
+        >
+          <img
+          className = {classes.popupImage}
+          src = {popup.image}
+          alt = {popup.title}
+          />
+          <div className = {classes.popupTab}>
+            <Typography>
+               {popup.latitude.toFixed(6)} , {popup.longitude.toFixed(6)}
+            </Typography>
+            {isAuthUser() && (
+              <Button>
+                <DeleteIcon className = {classes.deleteIcon} />
+              </Button>
+            )}
+          </div>    
+        </Popup>
+      )}
 
     </ReactMapGL>
     <Blog/>

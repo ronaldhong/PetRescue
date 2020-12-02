@@ -7,7 +7,8 @@ type ContextProps = {
     viewDevice: string,
     pins: any,
     state?: any,
-    dispatch?: any
+    dispatch?: any,
+    currentPin: object | null
   };
 
 
@@ -17,6 +18,7 @@ const Context = createContext<Partial<ContextProps>>({
     isAuth: false,
     draft: null,
     pins: [],
+    currentPin: null,
     viewDevice: window.innerWidth < 1000? "mobile": "desktop"
 })
 
