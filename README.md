@@ -23,7 +23,7 @@ Similar functionalities include:
     A Google Map that user can interact with:
         <ul>
             <li>Mark/Pin-point the location on the map.</li>
-            <li>Click on the mark location, User can also upload image, share comment, provide more information regarding the animal in need.</li>
+            <li>Click on the mark location, User can also upload image, share comment, provide more information regarding the animal in need of assistence.</li>
         </ul>
     </li>
 </ol>
@@ -33,7 +33,7 @@ Similar functionalities include:
 New Feature(s):
 </p>
 <ol>
-    <li>A Complete rewrite using React v16, GraphQL, MongoDB Atlas, ApolloServer.</li>
+    <li>A Complete rewrite using React v16, TypeScript, GraphQL, MongoDB Atlas, ApolloServer, and Google OAuth.</li>
     <li>NEW UI/UX Design.</li>
     <li>Google OAuth (Google authentication).</li>
     <li>Live Data with real time information update.</li>
