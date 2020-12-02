@@ -10,6 +10,10 @@ import Blog from "./Blog"
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { DialogContent, DialogContentText } from "@material-ui/core";
 
 
 //https://docs.mapbox.com/mapbox-gl-js/example/
@@ -28,6 +32,7 @@ const Map = ({ classes }) => {
   const [viewPort, setViewPort]  = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
   const [popup, setPopup] = useState(null)
+  const [showDiscardMessage, setShowDiscardMessage] = useState(false)
   const {viewDevice} =  state;
   const {draft} = state;
   const {pins} = state;
@@ -62,6 +67,8 @@ const Map = ({ classes }) => {
       dispatch({type: "CREATE_DRAFT"})
     }
     const [longitude, latitude] = lngLat
+    setPopup(null)
+    dispatch({type: "SET_PIN", payload: null})
     dispatch({type:"UPDATE_DRAFT_LOCATION", payload:{longitude, latitude} })
   }
 
@@ -73,6 +80,10 @@ const Map = ({ classes }) => {
   const highlightNewPon = pin =>{
     const color = differenceInMinute(Date.now(),Number(pin.createdAt)) <= 15? "limegreen" : "darkblue"
     return color
+  }
+
+  const deleteSelectPin = () =>{
+    console.log("delete pin", state.currentPin)
   }
 
   const isAuthUser = () => state.currentUser._id === popup.author._id
@@ -167,12 +178,34 @@ const Map = ({ classes }) => {
             </Typography>
             {isAuthUser() && (
               <Button>
-                <DeleteIcon className = {classes.deleteIcon} />
+                <DeleteIcon onClick = {()=> setShowDiscardMessage(true)} className = {classes.deleteIcon} />
               </Button>
             )}
           </div>    
         </Popup>
       )}
+
+      <Dialog
+          open={showDiscardMessage}
+          onClose={() => setShowDiscardMessage(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Delete Marker</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this marker?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowDiscardMessage(false)} color="primary" autoFocus>
+              Close
+            </Button>
+            <Button onClick={() => deleteSelectPin()} color="primary" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
 
     </ReactMapGL>
     <Blog/>
