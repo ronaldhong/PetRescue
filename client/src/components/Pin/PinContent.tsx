@@ -1,15 +1,46 @@
-import React from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { withStyles, createStyles } from "@material-ui/core/styles";
-// import Typography from "@material-ui/core/Typography";
-// import AccessTime from "@material-ui/icons/AccessTime";
-// import Face from "@material-ui/icons/Face";
-
-type PinContentProps = {
-  classes: any
+import Typography from "@material-ui/core/Typography";
+import Context from "../../context"
+import format from "date-fns/format"
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import FaceIcon from "@material-ui/icons/Face";
+import CreateComment from "../Comment/CreateComment";
+import Comments from "../Comment/Comments"
+type PinContentProp = {
+  classes: {
+    root: string,
+    icon: any,
+    text: string
+  }
 }
-const PinContent = (props:any) => {
-  return <div>PinContent</div>;
+
+const PinContent = ({classes}) => {
+  const {state, dispatch} = useContext(Context)
+  const { title, author, content, createdAt, comments } = state.currentPin;
+
+  return (   
+    <div className = {classes.root}>
+      <Typography component = "h2" variant="h4" color="primary" gutterBottom>
+        {title}
+      </Typography>
+      <Typography className ={classes.text} component = "h3" variant = "h6" color = "inherit" gutterBottom>
+        <FaceIcon className = {classes.icon} /> {author.name}
+      </Typography>
+      <Typography className = {classes.text} variant = "subtitle2" color = "inherit" gutterBottom>
+        <AccessTimeIcon className = {classes.icon} />
+        {format(Number(createdAt), "MMM Do, YYYY")}
+      </Typography>
+      <Typography variant = "subtitle1"  gutterBottom>
+        {content}
+      </Typography>
+
+      <CreateComment />
+      <Comments comments={comments} />
+    </div>
+  );
 };
+
 
 const styles = (theme:any) => createStyles({
   root: {
@@ -17,10 +48,10 @@ const styles = (theme:any) => createStyles({
     textAlign: "center",
     width: "100%"
   },
-  icon: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  },
+  // icon: {
+  //   marginLeft: theme.spacing.unit,
+  //   marginRight: theme.spacing.unit
+  // },
   text: {
     display: "flex",
     alignItems: "center",

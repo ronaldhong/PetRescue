@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import context from "../context"
-import NoContent from "./Pin/NoContent";
+import NoContent from "./Pin/NoContent"
 import CreatePin from "./Pin/CreatePin"
+import PinContent from "./Pin/PinContent"
 import { withStyles, createStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
@@ -14,13 +15,15 @@ type BlogProp = {
 
 const Blog = ({ classes }:BlogProp) => {
   const { state } = useContext(context);
-  const { draft } = state;
+  const { draft, currentPin } = state;
   let BlogContent;
-  if (!draft){
+  if (!draft && !currentPin){
     BlogContent = NoContent;
-  }else{
+  }else if (draft && !currentPin){
     BlogContent = CreatePin;
-  };
+  }else{
+    BlogContent = PinContent
+  }
 
   return (
     <Paper className={classes.root}>

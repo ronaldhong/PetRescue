@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import { withStyles, createStyles } from "@material-ui/core/styles";
 import ReactMapGL, {NavigationControl, Marker, Popup} from "react-map-gl"
 import {GET_PINS} from "../graphql/queries"
+import {DELETE_PIN_MUTATION} from "../graphql/mutations"
 import {useClient} from "../client"
 import differenceInMinute from "date-fns/difference_in_minutes"
 import PinIncon from "./PinIcon"
@@ -82,8 +83,12 @@ const Map = ({ classes }) => {
     return color
   }
 
-  const deleteSelectPin = () =>{
-    console.log("delete pin", state.currentPin)
+  const deleteSelectPin = async () =>{
+    const variable = {pinId: state.currentPin._id}
+    const {deletePin} = await client.request(DELETE_PIN_MUTATION, variable)
+    dispatch({type: "DELETE_PIN", payload: {deletePin}})
+    setPopup(null)
+    setShowDiscardMessage(false)
   }
 
   const isAuthUser = () => state.currentUser._id === popup.author._id
@@ -130,8 +135,9 @@ const Map = ({ classes }) => {
           longitude = {pin['longitude']}
           offsetLeft = {-19}
           offsetTop = {-37}
+          className = {classes.pinIcon}
         >
-          <PinIncon onClick = {()=>handleSelectPin(pin)} size = {40} color = {highlightNewPon(pin)}/>
+          <PinIncon style = {{"cursor":"pointer"}} onClick = {()=>handleSelectPin(pin)} size = {40} color = {highlightNewPon(pin)} className = {classes.pinIcon}/>
         </Marker>
         ))
       }
@@ -259,6 +265,11 @@ const styles = createStyles({
     zIndex: 1,
     padding: "6px",
     fontWeight: "bold",
+    },
+    pinIcon:{
+      '&:hover': {
+        opacity: .6
+       }
     }
 });
 

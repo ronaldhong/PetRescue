@@ -61,6 +61,16 @@ export default function reducer(state, action){
                 currentPin: action.payload,
                 draft: null
             }
+        case "DELETE_PIN":
+            const deletePin = action.payload.deletePin;
+            const filterPins = state.pins.filter(pin => pin._id !== deletePin._id)
+            console.log("deletePin", deletePin)
+            console.log("filterPins",filterPins)
+            return {
+                ...state,
+                pins: filterPins,
+                currentPin: null
+            }
         default:
             return state;
     }

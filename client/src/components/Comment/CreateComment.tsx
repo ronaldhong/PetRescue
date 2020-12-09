@@ -10,8 +10,14 @@ type createCommentProps = {
   classes: any
 }
 
-const CreateComment = (props:any) => {
-  return <div>CreateComment</div>;
+const CreateComment = ({classes}) => {
+  return (
+    <>
+      <form className = {classes.form}>
+
+      </form>
+    </>
+  )
 };
 
 const styles = (theme:any) => createStyles({
